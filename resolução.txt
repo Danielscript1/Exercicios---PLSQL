@@ -1,0 +1,35 @@
+create table regista1(
+id number(6) ,
+nome varchar2(60), 
+data_registrada date,
+salario number,
+salario_novo number
+);
+desc regista1;
+
+
+--insert into log_salario values (1,'Daniel',sysdate,2000,null);
+
+--drop TABLE log_salario;
+CREATE OR REPLACE TRIGGER registra_func AFTER
+    UPDATE OF salary ON employees
+    FOR EACH ROW
+BEGIN
+    INSERT INTO regista1 VALUES (
+        :old.employee_id,
+        :old.first_name,
+        sysdate,
+        :old.salary,
+        :new.salary
+    );
+
+END;
+
+UPDATE employees
+SET SALARY = 2820 
+WHERE salary = 2800;
+----adicionando---
+alter table regista1 add os_user varchar(50);
+
+
+select * from regista1;
