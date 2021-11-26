@@ -1,0 +1,90 @@
+1)CREATE OR REPLACE TRIGGER T_REGISTRA_LOGOFF
+
+  BEFORE LOGOFF ON database
+
+  DECLARE
+
+    PRAGMA AUTONOMOUS_TRANSACTION;
+
+    V_OSUSER VARCHAR2(30);
+
+BEGIN
+
+  select SYS_CONTEXT( 'USERENV', 'OS_USER' )
+
+  INTO V_OSUSER
+
+  from dual;
+
+
+
+  INSERT INTO LOG_USER (
+
+      OSUSER,
+
+      DATA,
+
+      TIPO
+
+  ) VALUES (
+
+      V_OSUSER,
+
+      SYSDATE,
+
+      'LOGOFF' 
+
+  );
+
+
+
+  COMMIT;
+
+END;
+
+/
+2)CREATE OR REPLACE TRIGGER T_REGISTRA_LOGON
+
+  AFTER LOGON ON database
+
+  DECLARE
+
+    PRAGMA AUTONOMOUS_TRANSACTION;
+
+    V_OSUSER VARCHAR2(30);
+
+BEGIN
+
+  select SYS_CONTEXT( 'USERENV', 'OS_USER' )
+
+  INTO V_OSUSER
+
+  from dual;
+
+
+
+  INSERT INTO LOG_USER (
+
+      OSUSER,
+
+      DATA,
+
+      TIPO
+
+  ) VALUES (
+
+      V_OSUSER,
+
+      SYSDATE,
+
+      'LOGON' 
+
+  );
+
+
+
+  COMMIT;
+
+END;
+
+/
