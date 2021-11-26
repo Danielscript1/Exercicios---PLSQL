@@ -1,0 +1,113 @@
+create table regista1(
+id number(6) ,
+nome varchar2(60), 
+data_registrada date,
+salario number,
+salario_novo number
+);
+desc regista1;
+
+
+--insert into log_salario values (1,'Daniel',sysdate,2000,null);
+
+--drop TABLE log_salario;
+CREATE OR REPLACE TRIGGER registra_func AFTER
+    UPDATE OF salary ON employees
+    FOR EACH ROW
+BEGIN
+    INSERT INTO regista1 VALUES (
+        :old.employee_id,
+        :old.first_name,
+        sysdate,
+        :old.salary,
+        :new.salary
+    );
+
+END;
+
+UPDATE employees
+SET SALARY = 2820 
+WHERE salary = 2800;
+----adicionando---
+alter table regista1 add os_user varchar(50);
+
+
+select * from regista1;
+2)CREATE OR REPLACE TRIGGER ALTER_SALARIO
+
+ AFTER UPDATE OF SALARY
+
+ ON EMPLOYEES 
+
+ FOR EACH ROW
+
+ 
+
+ DECLARE
+
+ OS_USER VARCHAR2(20);
+
+ 
+
+ BEGIN
+
+
+
+ select SYS_CONTEXT('USERENV', 'OS_USER') OS_USER INTO OS_USER from dual; 
+
+ 
+
+ INSERT INTO SALARIO_LOG (
+
+          SALARIO_ID, 
+
+          DATA,
+
+          SALARIO_ANTIGO,
+
+          SALARIO_NOVO,
+
+          OS_USER)
+
+      VALUES (:OLD.employee_id,
+
+          SYSDATE,
+
+          :OLD.SALARY,
+
+          :NEW.SALARY,
+
+          OS_USER);
+
+
+
+END;
+4)select SYS_CONTEXT( 'USERENV', 'OS_USER' ) from dual;
+
+
+
+CREATE OR REPLACE TRIGGER T_REGISTRA_LOGON
+
+  AFTER LOGON ON database
+
+  DECLARE
+
+    PRAGMA AUTONOMOUS_TRANSACTION;
+
+    --Variaveis <-----
+
+BEGIN
+
+
+
+  --Codigo <------
+
+
+
+END;
+
+/
+
+drop trigger T_REGISTRA_LOGON;
+
+alter trigger T_REGISTRA_LOGON DISABLE;
