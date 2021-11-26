@@ -1,0 +1,131 @@
+1)declare
+nota1 number := 6;
+nota2 number :=6;
+media number;
+begin
+media:=(nota1+nota2)/2;
+if media>=6 then
+DBMS_OUTPUT.PUT_LINE ('APROVADO: '||media);
+else
+DBMS_OUTPUT.PUT_LINE ('reprovado'||media);
+end if;
+end;
+2)declare
+ grade CHAR(1) :='b';
+begin
+CASE grade
+WHEN 'a' then DBMS_OUTPUT.PUT_LINE ('BOA NOITE');
+WHEN 'b' then DBMS_OUTPUT.PUT_LINE ('boa tarde');
+end case;
+end;
+3)DECLARE
+I INTEGER :=0; 
+begin
+LOOP
+DBMS_OUTPUT.PUT_LINE(I**2);
+I:= I+1;
+EXIT WHEN I>10;
+end Loop;
+end;
+4)DECLARE
+I INTEGER := 0;
+BEGIN
+FOR I IN 1..3 LOOP
+DBMS_OUTPUT.PUT_LINE(I);
+END LOOP;
+END;
+5)DECLARE
+calculadora number:= 0;
+resultado number;
+
+begin
+WHILE calculadora <=10 LOOP
+resultado := 2 * calculadora;
+calculadora := calculadora+1;
+DBMS_OUTPUT.PUT_LINE('RESULTADO' || RESULTADO);
+END LOOP;
+
+end;
+6)DECLARE
+    numero INTEGER := 2;
+    quadrado integer := 0;
+BEGIN
+WHILE numero != 0 LOOP
+quadrado := numero*numero;
+DBMS_OUTPUT.PUT_LINE(quadrado);
+EXIT WHEN true;
+END LOOP;
+
+END;
+7)SET SERVEROUTPUT ON
+DECLARE
+    TYPE population IS
+        TABLE OF NUMBER INDEX BY VARCHAR2(64);
+    city_population population;
+BEGIN
+    city_population('smallville') := 500;
+    city_population('sao paulo') := 600;
+    city_population('teresina') := 200;
+    dbms_output.put_line(city_population('teresina'));
+
+END;
+8)declare
+TYPE Foursome IS VARRAY(4) OF VARCHAR2(15);
+team Foursome := Foursome('John', 'Mary', 'Alberto', 'Juanita');
+begin
+DBMS_OUTPUT.PUT_LINE(team(2));
+end;
+9)
+DECLARE
+dept_rec departments%ROWTYPE;
+BEGIN
+dept_rec.department_name := 'IT';
+DBMS_OUTPUT.put_line(dept_rec.department_name);
+END;
+10)DECLARE
+type name_rec is RECORD(
+first employees.first_name%type DEFAULT 'daniel',
+last employees.last_name%type default 'sousa');
+name1 name_rec;
+--name2 name_rec2;
+begin
+name1.first := 'valdir';
+DBMS_OUTPUT.PUT_LINE(name1.first);
+end;
+11)-----declare o cursor------
+declare
+cursor cursor_emp is
+select first_name || ' ' || last_name name, salary
+from employees;
+----fim da declaração-----
+
+----declaração da variavel para trabalhar com cursor
+var_simples cursor_emp%rowtype;
+begin 
+ 
+ ---se o curso não estiver aberto abra o cursor ----
+ if not  cursor_emp%isopen THEN
+ open cursor_emp;
+ end if;
+ 
+ 
+ ---execute o loop ate não encontra mais cursor-----
+ loop
+ FETCH cursor_emp into var_simples;
+ ---saia do cursor ate não estiver mais registro para processar
+ exit WHEN cursor_emp%notfound;
+ DBMS_OUTPUT.PUT_LINE('nome: '||var_simples.name || ' salario: '||var_simples.salary );
+ end loop;
+ close cursor_emp;
+11)CREATE OR REPLACE function F_nome_completo(nome varchar2, sobrenome varchar2)
+return  VARCHAR2
+as 
+NomeCompleto varchar(100);
+--SELECT first_name || ' ' || last_name FROM employees;
+begin
+NomeCompleto := nome || ' ' || sobrenome;
+return NomeCompleto;
+
+end;
+
+ 
